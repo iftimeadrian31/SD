@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+
+{% block head %} 
+{% endblock %}
+
+{% block body %} 
+<div class="content">
+    <h1>Cheltuieli</h1>
+    <table>
+        <tr>
+            <th>Nume</th>
+            <th>Suma</th>
+            <th>Data</th>
+            <th>Actiuni</th>
+        </tr>
+        {% for task in tasks %}
+            <tr>
+                <td>{{ task.Nume }}</td>
+                <td>{{ task.Suma }}</td>
+                <td>{{ task.date_created.date() }}</td>
+                <td>
+                    <a href="/{{task.id}}">Delete</a>
+                    <br>
+                    <a href="/update/{{task.id}}">Update</a>
+                </td>
+            </tr>
+            {% endfor %}
+    </table>
+    <form action='/' method='POST'>
+        <label>Nume</label>
+        <br>
+        <input type="text" name="Nume" id="Nume">
+        <br>
+        <br>
+        <label>Suma</label>
+        <br>
+        <input type="text" name="Suma" id="Suma">
+        <br>
+        <br>
+        <input type="submit" value="Add person">
+    </form>
+</div>
+{% endblock %}

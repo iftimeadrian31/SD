@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang='ro'>
+    <head>
+        <meta charset="UTF-8">
+        <title>Pagina</title>
+        <script>
+            function Get(){
+                const url = "http://localhost:8080/agenda"
+		string=''
+                if (Id_chk.checked == 1){
+			if(string=='')
+				string="?id="+document.getElementById("Id").value;
+			else
+				string=string+"&id="+document.getElementById("Id").value;
+                }
+                if (firstName_chk.checked == 1){
+			if(string=='')
+			{
+				string="?firstName="+document.getElementById("firstName").value;
+			}
+			else
+				string=string+"&firstName="+document.getElementById("firstName").value;
+                }
+                if (lastName_chk.checked == 1){
+			if(string=='')
+			{
+				string="?lastName="+document.getElementById("lastName").value;
+			}
+			else
+				string=string+"&lastName="+document.getElementById("lastName").value;
+                }
+                if (telephoneNumber_chk.checked == 1){
+			if(string=='')
+			{
+				string="?telephoneNumber="+document.getElementById("telephoneNumber").value;
+			}
+			else
+				string=string+"&telephoneNumber="+document.getElementById("telephoneNumber").value;
+                }
+		alert(url+string);
+
+		fetch(url+string) 
+		    .then(response => response.json()) 
+		    .then(json => { 
+			let li = `<tr><th>id</th><th>lastName</th><th>firstName</th><th>telephoneNumber</th></tr>`; 
+			json.forEach(user => { 
+			    li += `<tr> 
+				<td>${user.id} </td> 
+				<td>${user.lastName}</td>
+				<td>${user.firstName} </td> 
+				<td>${user.telephoneNumber} </td>           
+			    </tr>`; 
+			}); 
+		    document.getElementById("users").innerHTML = li; 
+		}); 
+		
+
+            }
+            function Post(){
+ 		const url = "http://localhost:8080/person"
+		let data={
+			id: '',
+			lastName: '',
+			firstName: '',
+			telephoneNumber: ''
+		}
+                if (Id_chk.checked == 1){
+				data['id']=document.getElementById("Id").value;
+                }
+                if (firstName_chk.checked == 1){
+				data['firstName']=document.getElementById("firstName").value;
+                }
+                if (lastName_chk.checked == 1){
+				data['lastName']=document.getElementById("lastName").value;
+                }
+                if (telephoneNumber_chk.checked == 1){
+
+				data['telephoneNumber']=document.getElementById("telephoneNumber").value;
+                }
+
+		fetch(url, {
+		  method: "POST",
+		  headers: {
+                'Content-Type': 'application/json'
+          },
+		  body: JSON.stringify(data)
+		}).then(res => {
+			return res.json()
+		});
+
+            }
+            function Delete(){
+                const url = "http://localhost:8080/person"
+		string=''
+                if (Id_chk.checked == 1){
+			id=document.getElementById("Id").value;
+			fetch(url+"/"+id, {
+		  	method: "DELETE",
+		  	headers: new Headers()
+			}).then(function(res) {	
+			});
+                }
+		
+	}	
+        </script>
+    </head>
+    <body>
+        <form></form>
+            <input type="checkbox" id="Id_chk" name="gender" value="Id">
+            <label>Id:</label>
+            <br>
+            <input type=text id="Id">
+            <br>
+            <br>
+            <input type="checkbox" id="firstName_chk" name="gender" value="firstName">
+            <label>firstName:</label>
+            <br>
+            <input type=text id="firstName">
+            <br>
+            <br>
+            <input type="checkbox" id="lastName_chk" name="gender" value="lastName">
+            <label>lastName:</label>
+            <br>
+            <input type=text id="lastName">
+            <br>
+            <br>
+            <input type="checkbox" id="telephoneNumber_chk" name="gender" value="telephoneNumber">
+            <label>telephoneNumber:</label>
+            <br>
+            <input type=text id="telephoneNumber">
+            <br>
+            <br>
+            <button onclick="Get()">afiseaza persoanele</button>
+            <br>
+            <br>
+            <button onclick="Post()">introdu persoane</button>
+            <br>
+            <br>
+            <button onclick="Delete()">sterge persoana</button>
+        </form>
+	<table id="users"></table>
+    </body>
+</html>
